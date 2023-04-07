@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: Rosmatika;
+    src: url("font/RosmatikaRegular-BWA45.ttf");
+}
+
+.root {
+    background-image: url("./image/karl_website_design_sliding_puzzle_numbers_beautiful_numbers4k_35d2066a-79f8-45d1-bdc6-066a1a9a6f02.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.text-custom {
+    font-family: Rosmatika;
+}
