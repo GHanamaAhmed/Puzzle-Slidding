@@ -35,7 +35,7 @@ let tabelRandom = () => {
     clearTabel()
     let path = [-1, 1, -3, 3]
     let random = Math.floor(Math.random() * (100 - 10) + 10)
-    tabel = goalTabel
+    tabel = [...goalTabel]
     emptyIndex = tabel.indexOf(0)
     let targetIndex
     let row;
@@ -123,6 +123,11 @@ var click = (e) => {
         if ((emptyIndex - e == 1 && emptyIndex % 3 > 0) || (emptyIndex - e == -1 && emptyIndex % 3 < 2) || (emptyIndex - e == 3 && Math.floor(emptyIndex / 3) > 0) || (emptyIndex - e == -3 && Math.floor(emptyIndex / 3) < 2)) {
             [tabel[emptyIndex], tabel[e]] = [tabel[e], tabel[emptyIndex]]
         }
+        if (tabel.toString() == goalTabel.toString()) {
+            isStart = false;
+            clearInterval(interval)
+            win.classList.replace("hidden", "flex")
+        }
         emptyIndex = tabel.indexOf(0)
         removePuzzle()
         afichage()
@@ -134,11 +139,8 @@ var afichage = () => {
         element = document.createElement("button")
         element.onclick = () => {
             click(tabel.indexOf(e));
-            if (tabel.toString() == goalTabel.toString()) {
-                isStart = false;
-                clearInterval(interval)
-                win.classList.replace("hidden", "flex")
-            }
+            console.log(tabel);
+            console.log(goalTabel);
         }
         if (e == 0) {
             element.className = "flex justify-center items-center text-7xl bg-white"
@@ -365,6 +367,11 @@ ref.addEventListener("click", (e) => {
             goalTabel = tg;
             emptyIndex = tabel.indexOf(0)
             removePuzzle()
+            startTime = 0
+            clearInterval(interval)
+            isStart = false
+            timer.innerHTML = 0
+            btnstart.innerHTML = "Start"
             afichage()
             timea.innerHTML = "Time:"
             deptha.innerHTML = "Depth:"
@@ -388,6 +395,11 @@ ran.addEventListener("click", (e) => {
     tabelRandom()
     emptyIndex = tabel.indexOf(0)
     removePuzzle()
+    startTime = 0
+    clearInterval(interval)
+    isStart = false
+    timer.innerHTML = 0
+    btnstart.innerHTML = "Start"
     afichage()
     start.value = tabel.toString()
     timea.innerHTML = "Time:"
@@ -402,5 +414,10 @@ RGame.addEventListener("click", (e) => {
     tabelRandom()
     emptyIndex = tabel.indexOf(0)
     removePuzzle()
+    startTime = 0
+    clearInterval(interval)
+    isStart = false
+    timer.innerHTML = 0
+    btnstart.innerHTML = "Start"
     afichage()
 })
