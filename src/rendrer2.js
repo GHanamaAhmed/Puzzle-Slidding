@@ -123,11 +123,6 @@ var click = (e) => {
         if ((emptyIndex - e == 1 && emptyIndex % 3 > 0) || (emptyIndex - e == -1 && emptyIndex % 3 < 2) || (emptyIndex - e == 3 && Math.floor(emptyIndex / 3) > 0) || (emptyIndex - e == -3 && Math.floor(emptyIndex / 3) < 2)) {
             [tabel[emptyIndex], tabel[e]] = [tabel[e], tabel[emptyIndex]]
         }
-        if (tabel.toString() == goalTabel.toString()) {
-            isStart = false;
-            clearInterval(interval)
-            win.classList.replace("hidden", "flex")
-        }
         emptyIndex = tabel.indexOf(0)
         removePuzzle()
         afichage()
@@ -139,8 +134,11 @@ var afichage = () => {
         element = document.createElement("button")
         element.onclick = () => {
             click(tabel.indexOf(e));
-            console.log(tabel);
-            console.log(goalTabel);
+            if (tabel.toString() == goalTabel.toString()) {
+                isStart = false;
+                clearInterval(interval)
+                win.classList.replace("hidden", "flex")
+            }
         }
         if (e == 0) {
             element.className = "flex justify-center items-center text-7xl bg-white"
