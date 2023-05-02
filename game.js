@@ -1,11 +1,11 @@
 const { parentPort } = require('worker_threads');
 class PuzzleNode {
-    constructor(state, parent, move, depth, cost) {
+    constructor(state, parent, move, depth) {
         this.state = state;
         this.parent = parent;
         this.move = move;
         this.depth = depth;
-        this.cost = cost;
+        
     }
 
     getChildren() {
@@ -18,7 +18,7 @@ class PuzzleNode {
             const newState = this.state.slice();
             const targetIndex = emptyIndex - 1;
             [newState[emptyIndex], newState[targetIndex]] = [newState[targetIndex], newState[emptyIndex]];
-            children.push(new PuzzleNode(newState, this, "left", this.depth + 1, this.cost + 1));
+            children.push(new PuzzleNode(newState, this, "left", this.depth + 1));
         }
 
         if (col < 2) {
@@ -26,21 +26,21 @@ class PuzzleNode {
             const targetIndex = emptyIndex + 1;
             [newState[emptyIndex], newState[targetIndex]] = [newState[targetIndex], newState[emptyIndex]];
 
-            children.push(new PuzzleNode(newState, this, "right", this.depth + 1, this.cost + 1));
+            children.push(new PuzzleNode(newState, this, "right", this.depth + 1));
         }
 
         if (row > 0) {
             const newState = this.state.slice();
             const targetIndex = emptyIndex - 3;
             [newState[emptyIndex], newState[targetIndex]] = [newState[targetIndex], newState[emptyIndex]];
-            children.push(new PuzzleNode(newState, this, "up", this.depth + 1, this.cost + 1));
+            children.push(new PuzzleNode(newState, this, "up", this.depth + 1));
         }
 
         if (row < 2) {
             const newState = this.state.slice();
             const targetIndex = emptyIndex + 3;
             [newState[emptyIndex], newState[targetIndex]] = [newState[targetIndex], newState[emptyIndex]];
-            children.push(new PuzzleNode(newState, this, "down", this.depth + 1, this.cost + 1));
+            children.push(new PuzzleNode(newState, this, "down", this.depth + 1));
         }
 
         return children;
@@ -64,8 +64,8 @@ class PuzzleNode {
     }
 }
 function solvePuzzle(start, goal) {
-    const startNode = new PuzzleNode(start, null, null, 0, 0);
-    const goalNode = new PuzzleNode(goal, null, null, null, null);
+    const startNode = new PuzzleNode(start, null, null, 0);
+    const goalNode = new PuzzleNode(goal, null, null, null);
     const startTime = Date.now();
     let nowTime;
     const queue = [startNode];
@@ -97,8 +97,8 @@ function solvePuzzle(start, goal) {
     return { path: null, nowTime: nowTime }; // no solution found
 }
 function solvePuzzleBFS(start, goal) {
-    const startNode = new PuzzleNode(start, null, null, 0, 0);
-    const goalNode = new PuzzleNode(goal, null, null, null, null);
+    const startNode = new PuzzleNode(start, null, null, 0);
+    const goalNode = new PuzzleNode(goal, null, null, null);
     const startTime = Date.now();
     let nowTime;
     const queue = [startNode];
@@ -129,8 +129,8 @@ function solvePuzzleBFS(start, goal) {
     return { path: null, nowTime: nowTime }; // no solution found
 }
 function solvePuzzleDFS(start, goal, depth) {
-    const startNode = new PuzzleNode(start, null, null, 0, 0);
-    const goalNode = new PuzzleNode(goal, null, null, null, null);
+    const startNode = new PuzzleNode(start, null, null,0);
+    const goalNode = new PuzzleNode(goal, null, null, null);
     const startTime = Date.now();
     let nowTime;
     const queue = [startNode];
@@ -149,7 +149,7 @@ function solvePuzzleDFS(start, goal, depth) {
             path.reverse()
             return { path, nowTime };
         }
-        if (node.depth <= depth) {
+        if (node.depth < depth) {
             const children = node.getChildren();
             for (const child of children) {
                 let isvisite = false
